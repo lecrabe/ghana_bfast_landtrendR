@@ -49,7 +49,7 @@ tmp_dir     <- paste0(rootdir,"tmp/")
 dir.create(gadm_dir,showWarnings = F)
 dir.create(tile_dir,showWarnings = F)
 dir.create(bfst_dir,showWarnings = F)
-dir.create(gfcdwn_dir,showWarnings = F)
+dir.create(gfcdwn_dir,recursive = T, showWarnings = F)
 dir.create(gfc_dir,showWarnings = F)
 dir.create(tmp_dir,showWarnings = F)
 
