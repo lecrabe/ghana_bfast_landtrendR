@@ -149,7 +149,7 @@ country   <- getData('GADM',
 country <- spTransform(country,CRS('+init=epsg:4326'))
 (bb    <- extent(country))
 
-country_name   <- paste0(country_dir,'GADM_',countrycode)
+country_name   <- paste0(gadm_dir,'GADM_',countrycode)
 country_shp    <- paste0(country_name,".shp")
 country_field <-  "id_country"
 country@data[,country_field] <- row(country)[,1]
