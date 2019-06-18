@@ -82,7 +82,10 @@ packages(dplyr)
 packages(ggplot2)
 packages(reshape2)
 
-packages(gfcanalysis)
+## Packages to download GFC data
+packages(devtools)
+install_github('yfinegold/gfcanalysis')
+library(gfcanalysis)
 
 ########################### CREATE A FUNCTION TO GENERATE A GRID
 generate_grid <- function(aoi,size){
