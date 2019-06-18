@@ -9,6 +9,7 @@
 
 ## Set the country code
 countrycode <- "GHA"
+nbatchmax <- 10
 
 ## parameters
 threshold <- 30

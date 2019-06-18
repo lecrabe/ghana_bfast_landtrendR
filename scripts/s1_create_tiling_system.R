@@ -86,6 +86,16 @@ names(df) <- c("username","tileID")
 df$tileID <- as.numeric(df$tileID)
 table(df$username)
 
+nbatch <- ceiling(max(table(df$username))/nbatchmax)
+
+df <- cbind(df,rep(1:nbatch,ceiling(nrow(df)/nbatch))[1:nrow(df)])
+names(df) <- c("username","tileID","batch")
+
+table(df$username,df$batch)
+
+df$user_batch <- paste0(df$username,"_",df$batch)
+df <- arrange(df,df$user_batch)
+df$tileID <- dt$tileID
 tiles@data <- df
 
 ### Export ALL TILES as KML
