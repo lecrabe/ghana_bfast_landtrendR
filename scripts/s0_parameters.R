@@ -7,6 +7,38 @@
 ####################################################################################################
 ####################################################################################################
 
+## Set the country code
+countrycode <- "GHA"
+
+
+## Set the working directory
+rootdir       <- "~/ghana_bfast_landtrenR/"
+setwd(rootdir)
+rootdir  <- paste0(getwd(),"/")
+username <- unlist(strsplit(rootdir,"/"))[3]
+
+############ USER-DEFINED DIRECTORIES
+aoi_dir   <- paste0(rootdir,"data/gcfrp_area/")
+aoi_path  <- paste0(aoi_dir,"cocoa_project.kml")
+operators <- paste0(rootdir,"participants_workshop_20190618.csv")
+
+
+############ FIXED DIRECTORIES
+scriptdir <- paste0(rootdir,"scripts/")
+doc_dir   <- paste0(rootdir,"docs/")
+data_dir  <- paste0(rootdir,"data/")
+gadm_dir  <- paste0(rootdir,"data/gadm/")
+tile_dir  <- paste0(rootdir,"data/tiling/")
+ts_dir    <- paste0("/home/",username,"/downloads/tiles_",countrycode,"/")
+bfst_dir  <- paste0(rootdir,"data/bfast_",countrycode,"_",username,"/")
+
+############ CREATE DEFAULT DIRECTORIES
+dir.create(gadm_dir,showWarnings = F)
+dir.create(tile_dir,showWarnings = F)
+dir.create(bfst_dir,showWarnings = F)
+
+
+
 ### Read all external files with TEXT as TEXT
 options(stringsAsFactors = FALSE)
 
@@ -36,34 +68,6 @@ packages(ggplot2)
 packages(reshape2)
 
 
-## Set the working directory
-rootdir       <- "~/ws_idn_20190611/"
-
-## Set the country code
-countrycode <- "IDN"
-
-## Go to the root directory
-setwd(rootdir)
-rootdir  <- paste0(getwd(),"/")
-username <- unlist(strsplit(rootdir,"/"))[3]
-
-scriptdir <- paste0(rootdir,"scripts/")
-doc_dir   <- paste0(rootdir,"docs/")
-data_dir  <- paste0(rootdir,"data/")
-gadm_dir  <- paste0(rootdir,"data/gadm/")
-tile_dir  <- paste0(rootdir,"data/tiling/")
-aoi_dir   <- paste0(rootdir,"data/aoi/")
-phu_dir   <- paste0(rootdir,"data/brg_phu/")
-ace_dir   <- paste0(rootdir,"data/moef_phu/")
-knl_dir   <- paste0(rootdir,"data/KLHK_Sekat_Kanal_Aceh/")
-
-ts_dir    <- paste0("/home/",username,"/downloads/tiles_aceh/")
-bfst_dir  <- paste0(rootdir,"data/bfast_aceh_",username,"/")
-
-dir.create(gadm_dir,showWarnings = F)
-dir.create(tile_dir,showWarnings = F)
-dir.create(bfst_dir,showWarnings = F)
-
 
 
 ########################### CREATE A FUNCTION TO GENERATE A GRID
@@ -86,3 +90,6 @@ generate_grid <- function(aoi,size){
   sqr_df
 }
 
+print(paste0("I am running for ",username))
+
+      

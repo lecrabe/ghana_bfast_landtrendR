@@ -48,7 +48,7 @@ sqr_df <- generate_grid(country,grid_deg)
 nrow(sqr_df)
 
 ### Select a vector from location of another vector
-aoi <- readOGR(paste0(phu_dir,"107_PHU_BOUNDARY.shp"))
+aoi <- readOGR(aoi_path)
 
 #aoi_3phu <- aoi[aoi$KODE_KHG %in% c("KHG.16.02.01","KHG.16.02.08","KHG.16.02.02"),]
 
@@ -73,7 +73,7 @@ tiles <- sqr_df_selected
 ### Distribute samples among users
 dt <- tiles@data
 
-users <- read.csv(paste0(doc_dir,"participants_workshop_20190611.csv"))
+users <- read.csv(operators)
 
 du    <- data.frame(cbind(users$UserName,dt$tileID))
 names(du) <- c("username","tileID")
@@ -86,11 +86,10 @@ names(df) <- c("username","tileID")
 df$tileID <- as.numeric(df$tileID)
 table(df$username)
 
-
 tiles@data <- df
 
 ### Export ALL TILES as KML
-export_name <- paste0("tiling_all_phu")
+export_name <- paste0("tiling_aoi")
 
 writeOGR(obj=tiles,
          dsn=paste(tile_dir,export_name,".kml",sep=""),
@@ -99,16 +98,17 @@ writeOGR(obj=tiles,
          overwrite_layer = T)
 
 
-### Create a final subset corresponding to your username
-my_tiles <- tiles[tiles$tileID %in% df[df$username == username,"tileID"],]
-plot(my_tiles,add=T,col="red")
-
-### Export the final subset
-export_name <- paste0("tiles_phu_",username)
-
-writeOGR(obj=my_tiles,
-         dsn=paste(tile_dir,export_name,".kml",sep=""),
-         layer= export_name,
-         driver = "KML",
-         overwrite_layer = T)
-
+### Create a optional subset corresponding to your username or loop through all
+# for (username in unique(df$username)){
+  # my_tiles <- tiles[tiles$tileID %in% df[df$username == username,"tileID"],]
+  # plot(my_tiles,add=T,col="red")
+  # 
+  # ### Export the final subset
+  # export_name <- paste0("tiles_phu_",username)
+  # 
+  # writeOGR(obj=my_tiles,
+  #          dsn=paste(tile_dir,export_name,".kml",sep=""),
+  #          layer= export_name,
+  #          driver = "KML",
+  #          overwrite_layer = T)
+# }
