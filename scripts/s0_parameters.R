@@ -52,7 +52,7 @@ tmp_dir     <- paste0(rootdir,"tmp/")
 dir.create(gadm_dir,showWarnings = F)
 dir.create(tile_dir,showWarnings = F)
 dir.create(bfst_dir,showWarnings = F)
-dir.create(gfcdwn_dir,showWarnings = F)
+dir.create(gfcdwn_dir,recursive = T, showWarnings = F)
 dir.create(gfc_dir,showWarnings = F)
 dir.create(tmp_dir,showWarnings = F)
 
@@ -85,7 +85,10 @@ packages(dplyr)
 packages(ggplot2)
 packages(reshape2)
 
-packages(gfcanalysis)
+## Packages to download GFC data
+packages(devtools)
+install_github('yfinegold/gfcanalysis')
+library(gfcanalysis)
 
 packages(maptools)
 ########################### CREATE A FUNCTION TO GENERATE A GRID
