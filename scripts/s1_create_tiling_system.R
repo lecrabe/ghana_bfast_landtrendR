@@ -39,7 +39,6 @@ writeOGR(country,
 ####################################################################################################
 
 ### What grid size do we need ? 
-grid_size <- 20000          ## in meters
 grid_deg  <- grid_size/111320 ## in degree
 
 
@@ -110,15 +109,48 @@ writeOGR(obj=tiles,
 
 ### Create a optional subset corresponding to your username or loop through all
 # for (username in unique(df$username)){
-  # my_tiles <- tiles[tiles$tileID %in% df[df$username == username,"tileID"],]
-  # plot(my_tiles,add=T,col="red")
-  # 
-  # ### Export the final subset
-  # export_name <- paste0("tiles_phu_",username)
-  # 
-  # writeOGR(obj=my_tiles,
-  #          dsn=paste(tile_dir,export_name,".kml",sep=""),
-  #          layer= export_name,
-  #          driver = "KML",
-  #          overwrite_layer = T)
-# }
+  my_tiles <- tiles[tiles$tileID %in% df[df$username == username,"tileID"],]
+  plot(my_tiles,add=T,col="red")
+
+  my_tiles$fusion <- 1
+  u_tiles <- unionSpatialPolygons(my_tiles,my_tiles$fusion)
+  
+  poly_list <- u_tiles@polygons[1][[1]]@Polygons
+  
+  lp <- list()
+  
+  for(i in 1:length(poly_list)){
+    poly <- Polygons(list(poly_list[i][[1]]),i)
+    lp <- append(lp,list(poly))
+  }
+  
+  tiles_u <-SpatialPolygonsDataFrame(
+    SpatialPolygons(lp,1:length(lp)), 
+    data.frame(1:length(poly_list)), 
+    match.ID = F
+  )
+  names(tiles_u) <- "fusion_id"
+  proj4string(tiles_u) <- proj4string(my_tiles)
+  my_tiles$fusion_id <- over(my_tiles,tiles_u)$fusion_id
+  
+  table(my_tiles$fusion_id)
+  plot(my_tiles)
+  plot(tiles_u)  
+  ### Export the final subset
+  export_name <- paste0("tiles_aoi_",username)
+  
+  writeOGR(obj=my_tiles,
+           dsn=paste(tile_dir,export_name,".kml",sep=""),
+           layer= export_name,
+           driver = "KML",
+           overwrite_layer = T)
+  
+  ### Export the final subset
+  export_name <- paste0("tiles_agg_",username)
+  
+  writeOGR(obj=tiles_u,
+           dsn=paste(tile_dir,export_name,".kml",sep=""),
+           layer= export_name,
+           driver = "KML",
+           overwrite_layer = T)
+  # }

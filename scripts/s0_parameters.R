@@ -15,9 +15,12 @@ nbatchmax <- 10
 threshold <- 30
 max_year  <- 18
 
-aoi_list    <- countrycode
-proj <- '+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs '
+## grid size in meters
+grid_size <- 20000          
 
+aoi_list    <- countrycode
+#proj <- '+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs '
+ghana_proj <- '2136'
 
 ## Set the working directory
 rootdir       <- "~/ghana_bfast_landtrenR/"
@@ -84,6 +87,7 @@ packages(reshape2)
 
 packages(gfcanalysis)
 
+packages(maptools)
 ########################### CREATE A FUNCTION TO GENERATE A GRID
 generate_grid <- function(aoi,size){
   ### Create a set of regular SpatialPoints on the extent of the created polygons  
@@ -160,6 +164,7 @@ writeOGR(obj = country,
          driver = "ESRI Shapefile",
          overwrite_layer = T)
 
-print(paste0("I am running for ",username))
 
-      
+proj <- CRS(paste0('+init=epsg:',ghana_proj))
+
+print(paste0("I am running for ",username))
