@@ -4,9 +4,7 @@
 ############### # load packages
 rootdir  <- paste0(path.expand("~"),"/")
 
-source(paste0(rootdir,"/bfastspatial/www/scripts/load_BFAST_packages.R"),echo = TRUE)
-
-data_dir <- paste0(rootdir,"downloads/gcfrp_ndmi_batch1_2013_2019_ndmi/")
+data_dir <- paste0(paste0(path.expand("~"),"/"),"downloads/gcfrp_ndmi_batch1_2013_2019_ndmi/")
 
 load(paste0(data_dir,"/my_work_space.RData"))
 
