@@ -16,7 +16,7 @@ threshold <- 30
 max_year  <- 18
 
 ## grid size in meters
-grid_size <- 20000          
+grid_size <- 40000          
 
 aoi_list    <- countrycode
 #proj <- '+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs '
@@ -31,7 +31,7 @@ username <- unlist(strsplit(rootdir,"/"))[3]
 ############ USER-DEFINED DIRECTORIES
 aoi_dir   <- paste0(rootdir,"data/gcfrp_area/")
 aoi_path  <- paste0(aoi_dir,"cocoa_project.kml")
-operators <- paste0(rootdir,"participants_workshop_20190618.csv")
+operators <- paste0(rootdir,"participants_workshop_20190801.csv")
 
 
 ############ FIXED DIRECTORIES
