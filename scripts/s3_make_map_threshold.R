@@ -1,5 +1,5 @@
 #################### SKIP IF OUTPUTS EXISTS ALREADY
-if(!file.exists(paste0(gfc_dir,"gfc_",countrycode,"_",threshold,"_map_clip_pct.tif"))){
+if(!file.exists(paste0(gfc_dir,"gfc_",countrycode,"_",gfc_threshold,"_map_clip_pct.tif"))){
   
   #################### COMBINATION INTO NATIONAL SCALE MAP
   system(sprintf("gdal_calc.py -A %s -B %s -C %s -D %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
@@ -9,8 +9,8 @@ if(!file.exists(paste0(gfc_dir,"gfc_",countrycode,"_",threshold,"_map_clip_pct.t
                  paste0(gfc_dir,"gfc_",countrycode,"_",types[4],".tif"),
                  paste0(tmp_dir,"tmp_gfc_map_",countrycode,".tif"),
                  
-                 paste0("(A<=",threshold,")*((C==1)*50 + (C==0)*30)+", ### NON FOREST
-                        "(A>", threshold,")*",
+                 paste0("(A<=",gfc_threshold,")*((C==1)*50 + (C==0)*30)+", ### NON FOREST
+                        "(A>", gfc_threshold,")*",
                         "((C==1)*(",
                         "(B>0)*  51 +",           ### GAIN+LOSS
                         "(B==0)* 50 )+",          ### GAIN
@@ -54,7 +54,7 @@ if(!file.exists(paste0(gfc_dir,"gfc_",countrycode,"_",threshold,"_map_clip_pct.t
   ################################################################################
   system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
                  paste0(tmp_dir,"tmp_gfc_map_clip_prj_pct",countrycode,".tif"),
-                 paste0(gfc_dir,"gfc_",countrycode,"_",threshold,"_map_clip_pct.tif")
+                 paste0(gfc_dir,"gfc_",countrycode,"_",gfc_threshold,"_map_clip_pct.tif")
   ))
   
 }
