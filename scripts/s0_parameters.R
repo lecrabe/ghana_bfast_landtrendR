@@ -9,6 +9,8 @@
 ####################################################################################################
 
 ####################################################################################################
+### hello this is a script
+## good morning
 
 ### Read all external files with TEXT as TEXT
 options(stringsAsFactors = FALSE)
@@ -26,7 +28,7 @@ packages <- function(x){
 packages(Hmisc)
 packages(RCurl)
 packages(hexbin)
-packages(gfcanalysis)
+# packages(gfcanalysis)
 
 ### Load necessary packages
 packages(raster)
@@ -54,11 +56,11 @@ countrycode <- "GHA"
 nbatchmax <- 10
 
 ## parameters
-threshold <- 30
+threshold <- 15
 max_year  <- 18
 
 #################### FOREST DEFINITION
-gfc_threshold <- 30 # in % Tree cover
+gfc_threshold <- 15 # in % Tree cover
 mmu <- 12           # in pixels 
 
 ## activity data years to assess
@@ -70,10 +72,10 @@ grid_size <- 40000
 
 aoi_list    <- countrycode
 #proj <- '+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs '
-ghana_proj <- '2136'
+ghana_proj <- '2136' ## epsg code
 
 ## Set the working directory
-rootdir       <- "~/ghana_bfast_landtrenR/"
+rootdir       <- "~/ghana_bfast_landtrendR/"
 setwd(rootdir)
 rootdir  <- paste0(getwd(),"/")
 username <- unlist(strsplit(rootdir,"/"))[3]

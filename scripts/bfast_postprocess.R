@@ -10,6 +10,9 @@ data_dir <- paste0(paste0(path.expand("~"),"/"),"downloads/gcfrp_ndmi_batch1_201
 source(paste0(rootdir,"/bfastspatial/www/scripts/load_BFAST_packages.R"),echo = TRUE)
 
 data_dir <- paste0(rootdir,"~/downloads/gcfrp_2013_2019_NDMI_L8_batch1/")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 load(paste0(data_dir,"/my_work_space.RData"))

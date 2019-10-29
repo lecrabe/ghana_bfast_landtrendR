@@ -9,14 +9,14 @@
 ### combine the land cover maps to derive maximum forest cover
 
 ## user parameters to get directory names
-source('~/gha_activity_data/scripts/get_parameters.R')
+source('~/ghana_bfast_landtrendR/scripts/get_parameters.R')
 
 ## create variables for all the land cover maps
-lc2000 <- paste0(lc_dir,'landuse_maps/Landuse_2000.tif')
-lc2010 <- paste0(lc_dir,'landuse_maps/Landuse_2010.tif')
-lc2012 <- paste0(lc_dir,'landuse_maps/Landuse_2012.tif')
-lc2015 <- paste0(lc_dir,'landuse_maps/Landuse_2015.tif')
-lc2018 <- paste0(lc_dir,'landuse_maps/Landuse_2018.tif')
+lc2000 <- paste0(lc_dir,'Landuse_2000.tif')
+lc2010 <- paste0(lc_dir,'Landuse_2010.tif')
+lc2012 <- paste0(lc_dir,'Landuse_2012.tif')
+lc2015 <- paste0(lc_dir,'Landuse_2015.tif')
+lc2018 <- paste0(lc_dir,'Landuse_2018.tif')
 
 ## make sure all the maps perfectly align
 ## using the 2018 land cover map as the reference map 

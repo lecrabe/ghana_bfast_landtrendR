@@ -11,7 +11,7 @@
 ####################################################################################################
 
 ## user parameters to get directory names
-source('~/gha_activity_data/scripts/get_parameters.R')
+source('~/ghana_bfast_landtrendR/scripts/get_parameters.R')
 ## download data 
 
 ### land cover maps from 2000,2010,2013,2015,2018
@@ -33,3 +33,4 @@ system(sprintf("wget -O %s  https://www.dropbox.com/s/7mvxne8a5mq6jyk/Grid_Ghana
 
 ## the samples assessed using Collect Earth for africa deal
 system(sprintf("wget -O %s  https://www.dropbox.com/s/9uze8sx524h6kn7/africa_deal_ghana.csv",paste0(samp_dir,"africa_deal_ghana.csv")))
+
