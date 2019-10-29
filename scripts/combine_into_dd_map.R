@@ -11,7 +11,7 @@
 time_start  <- Sys.time()
 
 # LOAD PARAMETERS
-source('~/ghana/gfc_data_map/s0_parameters.R')
+source('~/ghana_bfast_landtrendR/scripts/s0_parameters.R')
 
 ####################################################################################
 ####### DOWNLOAD HANSEN DATA
