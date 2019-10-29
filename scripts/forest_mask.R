@@ -9,7 +9,7 @@
 ### combine the land cover maps to derive maximum forest cover
 
 ## user parameters to get directory names
-source('~/ghana_bfast_landtrendR/scripts/get_parameters.R')
+source('~/ghana_bfast_landtrendR/scripts/s0_parameters.R')
 
 ## create variables for all the land cover maps
 lc2000 <- paste0(lc_dir,'Landuse_2000.tif')
@@ -81,28 +81,30 @@ if(!file.exists(forestmask)){
                  paste0("(A<3)*(B<3)*(C<3)*(D<3)*1")
 ))
 }
-gdalinfo(forestmask,mm=T)
+# gdalinfo(forestmask,mm=T)
 plot(raster(forestmask))
 
 
 ################### COMPRESS
-system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-               lc2000,
-               paste0(substr(lc2000, 1, nchar(lc2000)-4),'_comp','.tif')
-))
-system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-               lc2010,
-               paste0(substr(lc2010, 1, nchar(lc2010)-4),'_comp','.tif')
-))
-system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-               lc2012,
-               paste0(substr(lc2012, 1, nchar(lc2012)-4),'_comp','.tif')
-))
-system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-               lc2015,
-               paste0(substr(lc2015, 1, nchar(lc2015)-4),'_comp','.tif')
-))
-system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-               lc2018,
-               paste0(substr(lc2018, 1, nchar(lc2018)-4),'_comp','.tif')
-))
+# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
+#                lc2000,
+#                paste0(substr(lc2000, 1, nchar(lc2000)-4),'_comp','.tif')
+# ))
+# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
+#                lc2010,
+#                paste0(substr(lc2010, 1, nchar(lc2010)-4),'_comp','.tif')
+# ))
+# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
+#                lc2012,
+#                paste0(substr(lc2012, 1, nchar(lc2012)-4),'_comp','.tif')
+# ))
+# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
+#                lc2015,
+#                paste0(substr(lc2015, 1, nchar(lc2015)-4),'_comp','.tif')
+# ))
+# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
+#                lc2018,
+#                paste0(substr(lc2018, 1, nchar(lc2018)-4),'_comp','.tif')
+# ))
+# 
+

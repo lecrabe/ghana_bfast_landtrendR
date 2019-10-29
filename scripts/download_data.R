@@ -11,7 +11,7 @@
 ####################################################################################################
 
 ## user parameters to get directory names
-source('~/ghana_bfast_landtrendR/scripts/get_parameters.R')
+source('~/ghana_bfast_landtrendR/scripts/s0_parameters.R')
 ## download data 
 
 ### land cover maps from 2000,2010,2013,2015,2018
