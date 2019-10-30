@@ -70,26 +70,26 @@ for(type in types){
 }
 ####################################################################################
 ####### PREPARE COMMODITY MAP
-####################################################################################
-shp <- readOGR(paste0(ag_dir,"all_farms_merged.shp"))
-dbf <- shp@data
-dbf$unique_id <- row(dbf)[,1]
-shp@data <- dbf
-startyear1 <- as.numeric(paste0(strsplit(toString(startyear),"")[[1]][3:4],collapse = ""))
-endyear1 <-  as.numeric(paste0(strsplit(toString(endyear),"")[[1]][3:4],collapse = ""))
-
-shp <- spTransform(shp,CRS('+init=epsg:4326'))
-
-writeOGR(shp,paste0(ag_dir,"commodities.shp"),paste0(ag_dir,"commodities"),"ESRI Shapefile",overwrite_layer = T)
-
-head(shp)
-system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
-               scriptdir,
-               paste0(ag_dir,"commodities.shp"),
-               paste0(gfc_dir,"gfc_treecover2000.tif"),
-               paste0(ag_dir,"commodities.tif"),
-               "unique_id"
-))
+# ####################################################################################
+# shp <- readOGR(paste0(ag_dir,"all_farms_merged.shp"))
+# dbf <- shp@data
+# dbf$unique_id <- row(dbf)[,1]
+# shp@data <- dbf
+# startyear1 <- as.numeric(paste0(strsplit(toString(startyear),"")[[1]][3:4],collapse = ""))
+# endyear1 <-  as.numeric(paste0(strsplit(toString(endyear),"")[[1]][3:4],collapse = ""))
+# 
+# shp <- spTransform(shp,CRS('+init=epsg:4326'))
+# 
+# writeOGR(shp,paste0(ag_dir,"commodities.shp"),paste0(ag_dir,"commodities"),"ESRI Shapefile",overwrite_layer = T)
+# 
+# head(shp)
+# system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
+#                scriptdir,
+#                paste0(ag_dir,"commodities.shp"),
+#                paste0(gfc_dir,"gfc_treecover2000.tif"),
+#                paste0(ag_dir,"commodities.tif"),
+#                "unique_id"
+# ))
 
 
 ####################################################################################
