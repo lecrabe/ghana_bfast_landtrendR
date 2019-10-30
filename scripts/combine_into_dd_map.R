@@ -17,8 +17,9 @@ source('~/ghana_bfast_landtrendR/scripts/s0_parameters.R')
 ####### DOWNLOAD HANSEN DATA
 ####################################################################################
 
-library(devtools)
-install_github('yfinegold/gfcanalysis')
+startyear1 <- as.numeric(paste0(strsplit(toString(startyear),"")[[1]][3:4],collapse = ""))
+endyear1 <-  as.numeric(paste0(strsplit(toString(endyear),"")[[1]][3:4],collapse = ""))
+
 ### Make vector layer of tiles that cover the country
 aoi   <- getData('GADM',
                  path=gfcstore_dir, 
