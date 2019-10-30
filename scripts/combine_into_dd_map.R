@@ -153,13 +153,13 @@ system(sprintf("gdalwarp -t_srs \"%s\" -overwrite -ot Byte -co COMPRESS=LZW %s %
 ))
 
 #################### Create a country boundary mask at the GFC resolution (TO BE REPLACED BY NATIONAL DATA IF AVAILABLE) 
-system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
-               '~/liberia_activity_data/scripts/',
-               paste0(gadm_dir,"cocoa_project_ghana_30nutm_dissolved.shp"),
-               paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm.tif"),
-               paste0(gadm_dir,"cocoa_project_ghana_30nutm_dissolved.tif"),
-               "OBJECTID"
-))
+# system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
+#                '~/liberia_activity_data/scripts/',
+#                paste0(gadm_dir,"cocoa_project_ghana_30nutm_dissolved.shp"),
+#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm.tif"),
+#                paste0(gadm_dir,"cocoa_project_ghana_30nutm_dissolved.tif"),
+#                "OBJECTID"
+# ))
 
 #################### CLIP TO COUNTRY BOUNDARIES
 system(sprintf("gdal_calc.py -A %s -B %s  --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
@@ -179,9 +179,6 @@ pct <- data.frame(cbind(my_classes,
                         my_colors[3,]))
 
 write.table(pct,paste0(dd_dir,"color_table.txt"),row.names = F,col.names = F,quote = F)
-
-
-
 
 ################################################################################
 #################### Add pseudo color table to result
