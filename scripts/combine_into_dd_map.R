@@ -68,29 +68,6 @@ for(type in types){
   ))
   print(to_merge)
 }
-####################################################################################
-####### PREPARE COMMODITY MAP
-# ####################################################################################
-# shp <- readOGR(paste0(ag_dir,"all_farms_merged.shp"))
-# dbf <- shp@data
-# dbf$unique_id <- row(dbf)[,1]
-# shp@data <- dbf
-# startyear1 <- as.numeric(paste0(strsplit(toString(startyear),"")[[1]][3:4],collapse = ""))
-# endyear1 <-  as.numeric(paste0(strsplit(toString(endyear),"")[[1]][3:4],collapse = ""))
-# 
-# shp <- spTransform(shp,CRS('+init=epsg:4326'))
-# 
-# writeOGR(shp,paste0(ag_dir,"commodities.shp"),paste0(ag_dir,"commodities"),"ESRI Shapefile",overwrite_layer = T)
-# 
-# head(shp)
-# system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
-#                scriptdir,
-#                paste0(ag_dir,"commodities.shp"),
-#                paste0(gfc_dir,"gfc_treecover2000.tif"),
-#                paste0(ag_dir,"commodities.tif"),
-#                "unique_id"
-# ))
-
 
 ####################################################################################
 ####### COMBINE GFC LAYERS
@@ -222,99 +199,6 @@ system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif")
 ))
 
-
-# 
-# #############################################################
-# ### ADAPT PRIORITY LANDSCAPE MAPS FOR CROPPING
-# #############################################################
-# pls <- readOGR(paste0(pl_dir,"priority_areas_20190925.shp"))
-# proj4string(pls)
-# head(pls)
-# 
-# #################### RASTERIZE THE PRIORITY LANDSCAPE
-# system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
-#                scriptdir,
-#                paste0(pl_dir,"priority_areas_20190925.shp"),
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"),
-#                paste0(pl_dir,"priority_areas_20190925.tif"),
-#                "id"
-# ))
-# 
-# #################### MASK MAP FOR PRIORITY LANDSCAPE 1
-# system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"),
-#                paste0(pl_dir,"priority_areas_20190925.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl1.tif"),
-#                paste0("(B==1)*A")
-# ))
-# 
-# #################### MASK MAP FOR PRIORITY LANDSCAPE 2
-# system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"),
-#                paste0(pl_dir,"priority_areas_20190925.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl2.tif"),
-#                paste0("(B==2)*A")
-# ))
-# 
-# #################### MASK MAP FOR NON PRIORITY LANDSCAPE
-# system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"),
-#                paste0(pl_dir,"priority_areas_20190925.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_npl.tif"),
-#                paste0("(B==0)*A")
-# ))
-# 
-# 
-# ################################################################################
-# #################### Add pseudo color table to result
-# ################################################################################
-# system(sprintf("(echo %s) | oft-addpct.py %s %s",
-#                paste0(dd_dir,"color_table.txt"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl1.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl1_pct.tif")
-# ))
-# 
-# ################################################################################
-# #################### COMPRESS
-# ################################################################################
-# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl1_pct.tif"),
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl1_20191019.tif")
-# ))
-# 
-# ################################################################################
-# #################### Add pseudo color table to result
-# ################################################################################
-# system(sprintf("(echo %s) | oft-addpct.py %s %s",
-#                paste0(dd_dir,"color_table.txt"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl2.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl2_pct.tif")
-# ))
-# 
-# ################################################################################
-# #################### COMPRESS
-# ################################################################################
-# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl2_pct.tif"),
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_pl2_20191019.tif")
-# ))
-# 
-# ################################################################################
-# #################### Add pseudo color table to result
-# ################################################################################
-# system(sprintf("(echo %s) | oft-addpct.py %s %s",
-#                paste0(dd_dir,"color_table.txt"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_npl.tif"),
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_npl_pct.tif")
-# ))
-# 
-# ################################################################################
-# #################### COMPRESS
-# ################################################################################
-# system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
-#                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_npl_pct.tif"),
-#                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_npl_20191019.tif")
-# ))
 
 ################################################################################
 ####################  CLEAN
