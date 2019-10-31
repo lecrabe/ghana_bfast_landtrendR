@@ -101,8 +101,11 @@ samp_dir <- paste0(rootdir,"data/samples/")
 fmask_dir   <- paste0(rootdir,"data/forest_mask/")
 lc_dir      <- paste0(rootdir,"data/land_use/")
 ecozone_dir <- paste0(rootdir,"data/ecozone/")
-prj_dir    <- paste0(rootdir,"data/project_boundaries/")
+prj_dir     <- paste0(rootdir,"data/project_boundaries/")
 mspa_dir    <- paste0(rootdir,"data/MSPA/")
+bfst_res_dir<- paste0(rootdir,"data/bfast_group_results/")
+lndtrndr_dir<- paste0(rootdir,"data/landtrendr_results/")
+bfst_mrg_dir<- paste0(bfst_res_dir,"bfast_merged_results/")
 
 gfcstore_dir  <- paste0('/',paste0(strsplit(getwd(),'/')[[1]][2:3],collapse = '/'),"/downloads/gfc/",countrycode,'/')
 
@@ -120,6 +123,10 @@ dir.create(fmask_dir,showWarnings = F)
 dir.create(mspa_dir,showWarnings = F)
 dir.create(prj_dir,showWarnings = F)
 dir.create(ecozone_dir,showWarnings = F)
+dir.create(bfst_res_dir,showWarnings = F)
+dir.create(lndtrndr_dir,showWarnings = F)
+dir.create(bfst_mrg_dir,showWarnings = F)
+
 
 #################### PRODUCTS AT THE THRESHOLD
 gfc_tc       <- paste0(gfc_dir,"gfc_th",gfc_threshold,"_tc.tif")

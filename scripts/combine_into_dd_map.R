@@ -45,7 +45,7 @@ tilesx <- substr(tiles,31,38)
 
 types <- c("treecover2000","lossyear","gain","datamask")
 for(type in types){
-  
+  if(!file.exists(paste0(gfc_dir,"gfc_",type,".tif"))){
   print(type)
   
   to_merge <- paste(prefix,type,"_",tilesx,".tif",sep = "")
@@ -68,70 +68,80 @@ for(type in types){
                  paste0(gfc_dir,"tmp_merge_",type,".tif")
   ))
   print(to_merge)
-}
+  }
+  }
 
 ####################################################################################
 ####### COMBINE GFC LAYERS
 ####################################################################################
 
 #################### CREATE GFC TREE COVER MAP IN beginning year AT THRESHOLD
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(gfc_dir,"gfc_treecover2000.tif"),
                paste0(gfc_dir,"gfc_lossyear.tif"),
                paste0(dd_dir,"tmp_gfc_",startyear,"_gt",gfc_threshold,".tif"),
                paste0("(A>",gfc_threshold,")*((B==0)+(B>",startyear1-1,"))*A")
 ))
-
+}
 #################### CREATE GFC LOSS MAP AT THRESHOLD between start year and end year
-system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
+  
+  system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(gfc_dir,"gfc_treecover2000.tif"),
                paste0(gfc_dir,"gfc_lossyear.tif"),
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),
                paste0("(A>",gfc_threshold,")*(B>",startyear1-1,")*(B<",endyear1+1,")")
 ))
-
+}
 #################### SIEVE TO THE MMU
-system(sprintf("gdal_sieve.py -st %s %s %s ",
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
+  system(sprintf("gdal_sieve.py -st %s %s %s ",
                mmu,
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,"_sieve.tif")
 ))
-
+}
 #################### DIFFERENCE BETWEEN SIEVED AND ORIGINAL
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,"_sieve.tif"),
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,"_inf.tif"),
                paste0("(A>0)*(A-B)+(A==0)*(B==1)*0")
 ))
-
+}
 
 #################### CREATE GFC TREE COVER MASK IN end year AT THRESHOLD
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(dd_dir,"tmp_gfc_",startyear,"_gt",gfc_threshold,".tif"),
                paste0(gfc_dir,"gfc_lossyear.tif"),
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,".tif"),
                paste0("(A>0)*((B>=",endyear1+1,")+(B==0))")
 ))
-
+}
 
 #################### SIEVE TO THE MMU
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_sieve.py -st %s %s %s ",
                mmu,
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,"_sieve.tif")
 ))
-
+}
 #################### DIFFERENCE BETWEEN SIEVED AND ORIGINAL
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,"_sieve.tif"),
                paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,"_inf.tif"),
                paste0("(A>0)*(A-B)+(A==0)*(B==1)*0")
 ))
+}  
 plot(raster(paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,"_inf.tif")))
-gdalinfo(paste0(dd_dir,"tmp_gfc_",endyear,"_gt",gfc_threshold,"_inf.tif"),mm=T)
 #################### COMBINATION INTO DD MAP (1==NF, 2==F, 3==Df, 4==Dg, 5=gain)
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s -C %s -D %s -E %s --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(dd_dir,"tmp_gfc_",startyear,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_gfc_loss_",startyear1,endyear1,"_gt",gfc_threshold,"_sieve.tif"),
@@ -141,17 +151,19 @@ system(sprintf("gdal_calc.py -A %s -B %s -C %s -D %s -E %s --co COMPRESS=LZW --o
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),
                paste0("(A==0)*1+(A>0)*((B==0)*(C==0)*((D>0)*2+(E>0)*1)+(B>0)*3+(C>0)*4)")
 ))
-gdalinfo(paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),mm=T)
+}
+# gdalinfo(paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),mm=T)
 plot(raster(paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,".tif")))
 ################################################################################
 #################### PROJECT IN UTM 30
 ################################################################################
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdalwarp -t_srs \"%s\" -overwrite -ot Byte -co COMPRESS=LZW %s %s",
                "EPSG:32630",
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,".tif"),
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm.tif")
 ))
-
+}
 #################### Create a country boundary mask at the GFC resolution (TO BE REPLACED BY NATIONAL DATA IF AVAILABLE) 
 # system(sprintf("python %s/oft-rasterize_attr.py -v %s -i %s -o %s -a %s",
 #                '~/liberia_activity_data/scripts/',
@@ -162,13 +174,14 @@ system(sprintf("gdalwarp -t_srs \"%s\" -overwrite -ot Byte -co COMPRESS=LZW %s %
 # ))
 
 #################### CLIP TO COUNTRY BOUNDARIES
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_calc.py -A %s -B %s  --co COMPRESS=LZW --outfile=%s --calc=\"%s\"",
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm.tif"),
                paste0(gadm_dir,"cocoa_project_ghana_30nutm_dissolved.tif"),
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_country.tif"),
                paste0("(B>0)*A")
 ))
-
+}
 #################### CREATE A COLOR TABLE FOR THE OUTPUT MAP
 my_classes <- c(0,1,2,3,4,11)
 my_colors  <- col2rgb(c("black","grey","darkgreen","red","orange","purple"))
@@ -183,20 +196,22 @@ write.table(pct,paste0(dd_dir,"color_table.txt"),row.names = F,col.names = F,quo
 ################################################################################
 #################### Add pseudo color table to result
 ################################################################################
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("(echo %s) | oft-addpct.py %s %s",
                paste0(dd_dir,"color_table.txt"),
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_country.tif"),
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"pct.tif")
 ))
-
+}
 ################################################################################
 #################### COMPRESS
 ################################################################################
+if(!file.exists(paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif"))){
 system(sprintf("gdal_translate -ot Byte -co COMPRESS=LZW %s %s",
                paste0(dd_dir,"tmp_dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"pct.tif"),
                paste0(dd_dir,"dd_map_",startyear1,endyear1,"_gt",gfc_threshold,"_utm_20191017.tif")
 ))
-
+}
 
 ################################################################################
 ####################  CLEAN
